@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'war'
+
+group = 'de.saumya.mojo'
+version = '0.2-SNAPSHOT'
+
+description = """Rubygems Servlets"""
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+        
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'org.sonatype.nexus.plugins', name: 'nexus-ruby-tools', version:'2.11.2-06'
+    providedCompile group: 'javax.servlet', name: 'servlet-api', version:'2.5'
+    providedCompile group: 'de.saumya.mojo', name: 'jruby-mains', version:'0.1.0'
+    providedCompile group: 'org.eclipse.jetty', name: 'jetty-server', version:'8.1.14.v20131031'
+    providedCompile group: 'org.eclipse.jetty', name: 'jetty-webapp', version:'8.1.14.v20131031'
+}
