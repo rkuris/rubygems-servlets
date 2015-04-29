@@ -1,23 +1,53 @@
+buildscript {
+  repositories { jcenter() }
+  dependencies {
+    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.1'
+  }
+}
+
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'war'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'de.saumya.mojo'
-version = '0.2-SNAPSHOT'
+version = '0.3-SNAPSHOT'
 
 description = """Rubygems Servlets"""
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+mainClassName = 'de.saumya.mojo.rubygems.JettyRun'
+
 repositories {
-        
-     maven { url "http://repo.maven.apache.org/maven2" }
+     mavenCentral()
 }
 dependencies {
     compile group: 'org.sonatype.nexus.plugins', name: 'nexus-ruby-tools', version:'2.11.2-06'
-    providedCompile group: 'javax.servlet', name: 'servlet-api', version:'2.5'
-    providedCompile group: 'de.saumya.mojo', name: 'jruby-mains', version:'0.1.0'
-    providedCompile group: 'org.eclipse.jetty', name: 'jetty-server', version:'8.1.14.v20131031'
-    providedCompile group: 'org.eclipse.jetty', name: 'jetty-webapp', version:'8.1.14.v20131031'
+    compile group: 'de.saumya.mojo', name: 'jruby-mains', version:'0.1.0'
+    compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version:'9.2.10.v20150310'
+    compile group: 'org.eclipse.jetty', name: 'jetty-webapp', version:'9.2.10.v20150310'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.3'
+}
+
+war {
+  from 'src/main/webapp'
+}
+
+jar {
+  manifest {
+    attributes("Implementation-Title": "Gradle", "Implementation-Version": version)
+  }
+}
+
+publishing {
+  publications {
+    shadow(MavenPublication) {
+      from components.shadow
+      artifactId = 'rubygems-servlet-all'
+    }
+  }
 }
