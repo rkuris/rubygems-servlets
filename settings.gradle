@@ -1,1 +1,2 @@
 rootProject.name = 'rubygems'
+include "src:it:directory-browsing"
