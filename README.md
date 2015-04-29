@@ -7,30 +7,29 @@ webapp which hosts rubygems or a proxy to rubygems. delivers gem maven artifacts
 
 build
 --
+to build the standalone embedded jetty hosted and caching proxy server, just run:
 
-the regular webapp with hosted and (caching-)proxy can be built with
+    gradlew shadowJar
 
-     mvn package
+You can then execute this with:
 
-or just run it in place with
+    java -jar build/libs/rubygems*-all.jar
 
-     mvn jetty:run
+a war with hosted and (caching-)proxy can be built with
+
+     gradlew war
 
 where the hosted rubygems are located under <http://localhost:8989/hosted> and the proxy with <https://rubygems.org> as source is reachable under <http://localhost:8989/caching> or <http://localhost:8989/proxy>. and the  <http://localhost:8989/merge> will combine all three to on rubygems repository.
 
-executable standalone
----
+configuration
+--
+There are two configuration files you can edit, rubygems.properties and logback.xml. To specify custom ones on the command line,
+run with a command like this:
 
-you also can start the war like this (using embedded jetty):
-
-     mvn package -Pexecutable
-     java -jar target/rubygems.war
-
-and adjust the <rubygems.properties> to your liking.
+    java -Dlogback.configurationFile=/path/to/logback.xml -jar build/libs/rubygems*-all.jar /path/to/rubygems.properties
 
 usage
 --
-
 add them to your gem command
 
 * ```gem sources add <http://localhost:8989/hosted>```
